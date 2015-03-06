@@ -1,0 +1,142 @@
+<html>
+<head>
+<!--HTML 5 canvas snakes game-->
+</head>
+
+<style>
+
+*{
+margin: 0px;
+padding: 0px;
+}
+
+#mycanvas{
+border: 10px black solid;
+}
+
+</style>
+
+<body>
+<canvas id="mycanvas">
+</canvas>
+<BR>
+<font id="score" size="5px">Score: 0</font>
+<script>
+
+var canvas = document.getElementById('mycanvas');
+var ctx = canvas.getContext('2d');
+
+canvas.width = 0.9*window.innerWidth;
+canvas.height = 0.9*window.innerHeight;
+
+document.addEventListener("keydown",key_pressed_down);
+document.addEventListener("keyup",key_pressed_up);
+
+var keys = [];
+var fx,fy;
+var x,y;
+var score = 0;
+x = 50;
+y = 50;
+var last_pressed = 0;
+var food_eaten = true;
+var jump = 10;
+
+var snake = [];
+
+function snake_pixel(x,y) {
+	this.x = x;
+	this.y = y;
+}
+snake.push(new snake_pixel(x,y));
+
+function key_pressed_down(e) {
+keys[e.keyCode] = true;
+last_pressed = e.keyCode;
+}
+
+function key_pressed_up(e) {
+keys[e.keyCode] = false;
+}
+
+function start() {
+	//ctx.rect(x,y,20,20);
+	ctx.fillStyle = "red";
+	//ctx.strokeStyle = "green";
+	//ctx.lineWidth = 5;
+	for(var i=0;i<snake.length;i++)
+		ctx.fillRect(snake[i].x,snake[i].y,10,10);
+}
+
+function change_snake_pos() {
+	for(var i=1;i<snake.length;i++)
+		{
+		snake[i-1].x = snake[i].x;
+		snake[i-1].y = snake[i].y;
+		}
+	snake[snake.length - 1].x = x;	
+	snake[snake.length - 1].y = y;	
+}
+
+function gameplay() {
+	
+	ctx.clearRect(0,0,canvas.width,canvas.height);
+	//ctx.fillStyle="rgba(255,255,255,0.3)";
+    //ctx.fillRect(0, 0, canvas.width, canvas.height);
+	
+	if(last_pressed == 37) {
+		x-=jump;
+	}
+	else if(last_pressed == 38) {
+		y-=jump;	
+	}
+	else if(last_pressed == 39) {
+		x+=jump;	
+	}
+	else if(last_pressed == 40) {
+		y+=jump;	
+	}
+	
+	if(food_eaten) {	
+		food_gen();
+		}
+	draw_food();
+	
+	if(x>=fx-10 && x<=fx+10 && y>=fy-10 && y<=fy+10) {    ///FOOD EATEN HERE
+		//jump += 0.5;
+		score += 10;
+		snake.push(new snake_pixel(x,y));
+		document.getElementById("score").innerHTML = "Score: "+score;
+		food_gen();
+	}
+	else
+		{
+		change_snake_pos();
+		}
+		start();
+		
+	setTimeout(function(){ gameplay(); },100);
+}
+
+function draw_food() {
+	ctx.fillStyle = "black";
+	ctx.fillRect(fx,fy,10,10);
+}
+
+function food_gen() {
+	fx = Math.floor(Math.random() * canvas.width);
+	fy = Math.floor(Math.random() * canvas.height);
+	food_eaten = false;
+}
+
+start();
+gameplay();
+
+</script>
+
+</body>
+
+</html>
+
+
+

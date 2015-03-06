@@ -1,0 +1,16 @@
+{
+    "version":"1.0",
+	"name": "Snakes",
+    "description": "",
+    "launch_path": "/snakes_workshop.html",
+	"fullscreen": "true",
+    "icons": {
+        "60": "/images/icon_016.png",
+        "128": "/images/icon_128.png"
+    },
+	"developer": {
+        "name": "you",
+        "url": "url"
+    },
+    "default_locale": "en"
+}
